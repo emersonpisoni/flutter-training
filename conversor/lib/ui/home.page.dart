@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   _getData() async {
     await Future.delayed(Duration(seconds: 5));
     _categories = await Api.retrieveLocalCategories(context);
+    print(_categories);
     _defaultCategory = _categories.first;
     _currentCategory = _defaultCategory;
     _populateDropDown();
