@@ -1,5 +1,6 @@
 import 'package:exercicio7start/models/news.model.dart';
 import 'package:exercicio7start/network/api.dart';
+import 'package:exercicio7start/ui/loader.component.dart';
 import 'package:exercicio7start/ui/news_card.component.dart';
 import 'package:exercicio7start/utils/color.utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<News> _news = <News>[];
+  List<News> _news;
 
   @override
   void didChangeDependencies() {
@@ -35,17 +36,21 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Text('News'),
       ),
-      body: Container(
-        color: ColorUtils.darkBlue,
-        padding: EdgeInsets.all(15),
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            News news = _news[index ?? 0];
-            return NewsCard(news: news,);
-          },
-          itemCount: 3,
-        ),
-      ),
+      body: _news == null
+          ? LoaderComponent()
+          : Container(
+              color: ColorUtils.darkBlue,
+              padding: EdgeInsets.all(15),
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  News news = _news[index ?? 0] ?? [];
+                  return NewsCard(
+                    news: news,
+                  );
+                },
+                itemCount: 3,
+              ),
+            ),
     );
   }
 }

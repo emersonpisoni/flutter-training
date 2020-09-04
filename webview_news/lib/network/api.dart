@@ -1,17 +1,19 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:exercicio7start/models/news.model.dart';
 import 'package:flutter/cupertino.dart';
 
 class Api {
   static Future<List<News>> retrieveNews(BuildContext context) async {
-    final String json = await DefaultAssetBundle.of(context)
-        .loadString('assets/data/feed_data.json');
+    Dio dio = Dio();
 
-    final dynamic data = JsonDecoder().convert(json);
+    Response response = await dio.get(
+        'https://api.currentsapi.services/v1/latest-news?apiKey=TrVCpkv_NN6JMBIrSDu53dXUxb2JsAMizPBbzuIZv04Mylgj');
 
-    List<News> news =
-        data['news'].map<News>((dynamic data) => News.fromJson(data)).toList();
+    List<News> news = response.data['news']
+        .map<News>((dynamic data) => News.fromJson(data))
+        .toList();
 
     return news;
   }
